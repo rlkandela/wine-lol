@@ -23,20 +23,14 @@ EAPI=7
 # Take a look at the eclass/ directory for more examples.
 
 # Short one-line description of this package.
-DESCRIPTION="Wine for optimizing League of Legends in Linux"
+DESCRIPTION="Glibc for wine-lol for optimizing League of Legends in Linux"
 
 # Homepage, not used by Portage directly but handy for developer reference
 HOMEPAGE="https://github.com/M-Reimer/wine-lol"
 
 # Point to any required sources; these will be automatically downloaded by
 # Portage.
-#SRC_URI="ftp://foo.example.org/${P}.tar.gz"
-if [[ ${PV} == 9999* ]] ; then
-	inherit git-r3
-	EGIT_REPO_URI="https://github.com/M-Reimer/wine-lol.git"
-	EGIT_BRANCH="master"
-	KEYWORDS=""
-fi
+SRC_URI="https://ftp.gnu.org/gnu/glibc/glibc-${PV}.tar.xz"
 
 # Source directory; the dir where the sources can be found (automatically
 # unpacked) inside ${WORKDIR}.  The default value for S is ${WORKDIR}/${P}
@@ -104,22 +98,14 @@ IUSE=""
 # Build-time dependencies that need to be binary compatible with the system
 # being built (CHOST). These include libraries that we link against.
 # The below is valid if the same run-time depends are required to compile.
-#DEPEND="${RDEPEND}"
+DEPEND="${RDEPEND} linux-headers>=4.10 tzdata"
 
 # Build-time dependencies that are executed during the emerge process, and
 # only need to be present in the native build system (CBUILD). Example:
 #BDEPEND="virtual/pkgconfig"
 
-src_unpack() {
-case "${PV}" in
-	9999)
-		git-r3_fetch ${EGIT_REPO_URI}
-		git-r3_checkout ${EGIT_REPO_URI}
-		;;
-	*)
-		default
-		;;
-esac
+src_prepare() {
+
 }
 
 # The following src_configure function is implemented as default by portage, so
